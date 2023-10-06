@@ -1,6 +1,6 @@
 const db = require('../../data/db-config')
 
-async function find() { // EXERCISE A
+function find() { // EXERCISE A
   /*
     1A- Study the SQL query below running it in SQLite Studio against `data/schemes.db3`.
     What happens if we change from a LEFT join to an INNER join? --> Have fun! disappears
@@ -18,8 +18,9 @@ async function find() { // EXERCISE A
     Return from this function the resulting dataset.
   */
 
-const scheme = await db('steps as st')
-.leftJoin('steps as st', 'sc.scheme_id', '=', 'st.scheme_id')
+return db('schemes as sc')
+.leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
+.select('sc.*')
 .count('st.step_id as number_of_steps')
 .groupBy('sc.scheme_id')
 .orderBy('sc.scheme_id', 'asc')

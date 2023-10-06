@@ -33,16 +33,15 @@ const checkSchemeId = async (req, res, next) => {
   }
 */
 const validateScheme = async (req, res, next) => {
-try { 
- const scheme = await db('schemes')
- .where('scheme_name', req.params.scheme_name)
- .first()
- if(!scheme || scheme === '' || typeof scheme !== 'string' ) {
-  next({status: 400, message: 'invalid scheme name'})
- }
-} catch (err) {
-  next(err)
-}
+  if (
+    req.body.scheme_name === undefined ||
+    req.body.scheme_name === '' ||
+    typeof req.body.scheme_name !== 'string' 
+  ) {
+    next({status:400, message: 'invalid scheme_name'})
+  } else {
+    next()
+  }
 }
 
 /*
@@ -54,8 +53,16 @@ try {
     "message": "invalid step"
   }
 */
-const validateStep = async (req, res, next) => {
-
+const validateStep = (req, res, next) => {
+  if (
+    req.body.instructions === undefined ||
+    req.body.instructions.trim() === '' ||
+    req.params.step_number < 1
+  ) {
+    next({status: 400, message: 'invalid step'})
+  } else {
+    next()
+  }
 }
 
 module.exports = {
